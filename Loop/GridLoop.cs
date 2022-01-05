@@ -71,7 +71,6 @@ namespace IBCompSciProject.Loop
                 for(int y = 0; y < _height; y++)
                 {
                     _image.SetPixel(x, y, _grid[x, y].color);
-                    _image.Save("f");
                 }
             }
         }
