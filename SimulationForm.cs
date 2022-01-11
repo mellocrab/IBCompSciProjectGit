@@ -22,14 +22,14 @@ namespace IBCompSciProject
 
         GridLoop myGrid;
 
-        private int width = 100;
-        private int height = 50;
+        private int _width = 256;
+        private int _height = 128;
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            myGrid = new GridLoop(width, height);
+            myGrid = new GridLoop(_width, _height);
 
-            pbox_main.SizeMode = PictureBoxSizeMode.Zoom;
+            pbox_main.SizeMode = PictureBoxSizeMode.StretchImage;
             pbox_main.Image = myGrid._image;
 
             UpdateLoop();
@@ -40,9 +40,28 @@ namespace IBCompSciProject
         {
             while (true)
             {
-                Console.WriteLine("dfdf");
+                bool isMouseDown = false;
 
-                myGrid.IterationLoop();
+                //Point worldPoint = new Point(Cursor.Position.X, Cursor.Position.Y);
+                Point point = new Point();
+                try
+                {
+                    point = PointToClient(Cursor.Position);
+                } catch(Exception e)
+                {
+
+                }
+
+                if (Control.MouseButtons == MouseButtons.Left)
+                {
+                    isMouseDown = true;
+                }
+
+                float valX = (float)(point.X - pbox_main.Bounds.Left) / (pbox_main.Bounds.Right - pbox_main.Bounds.Left);
+                float valY = (float)(point.Y - pbox_main.Bounds.Top) / (pbox_main.Bounds.Bottom - pbox_main.Bounds.Top);
+
+
+                myGrid.IterationLoop(valX, valY, isMouseDown);
                 pbox_main.Refresh();
 
                 await Task.Delay(8);

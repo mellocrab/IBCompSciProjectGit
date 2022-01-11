@@ -11,10 +11,8 @@ namespace IBCompSciProject.Loop
     public class GridLoop
     {
 
+        //Is the bitmap image
         public Bitmap _image;
-
-
-        Graphics _graphics;
 
         //Holds Cell Data
         private Cell[,] _grid;
@@ -22,6 +20,9 @@ namespace IBCompSciProject.Loop
         //Stores image width and height;
         int _width;
         int _height;
+
+        //For random numbers
+        Random _rand;
 
         public GridLoop(int width, int height)
         {
@@ -42,25 +43,20 @@ namespace IBCompSciProject.Loop
             }
 
             drawToBitmap();
+
+            //Declare random object
+            _rand = new Random(DateTime.Now.Second);
+
         }
 
 
-        public void InitiateLoop()
-        {
-            _image = new Bitmap(5, 5);
-        }
 
-        public void IterationLoop()
+        public void IterationLoop(float x, float y, bool isMouseDown)
         {
-            Random r = new Random(24);
-            for (int x = 0; x < _width; x++)
+            if (isMouseDown)
             {
-                for (int y = 0; y < _height; y++)
-                {
-                    _grid[x, y] = new Cell(Color.FromArgb(r.Next()));
-                }
+                drawAt(x, y, 14);
             }
-
             drawToBitmap();
         }
 
@@ -74,7 +70,40 @@ namespace IBCompSciProject.Loop
                 }
             }
         }
-        
+
+        private void drawAt(double x, double y, int radius)
+        {
+            int centerX = (int)(x * _width);
+            int centerY = (int)(y * _height);
+
+            Console.WriteLine(centerX + "-" + centerY);
+
+
+            int quality = 56;
+
+            for (int i = 0; i < quality; i++)
+            {
+                double radians = (Math.PI * 2) * ((float)i / quality);
+                double cos = Math.Cos(radians);
+                double sin = Math.Sin(radians);
+
+
+
+                for (int r = 0; r < radius; r++)
+                {
+                    int xpos = (int)(centerX + cos * r);
+                    int ypos = (int)(centerY + sin * r);
+
+                    if (xpos < _width && ypos < _height && xpos >= 0 && ypos >= 0)
+                    {
+                        _grid[xpos, ypos].color = Color.CadetBlue;
+                    }
+                }
+
+            }
+
+        }
+
 
         //https://stackoverflow.com/questions/15696812/how-to-set-relative-path-to-images-directory-inside-c-sharp-project
     }
