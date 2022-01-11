@@ -24,6 +24,7 @@ namespace IBCompSciProject.Loop
         //For random numbers
         Random _rand;
 
+        #region Constructor
         public GridLoop(int width, int height)
         {
             //Initialize the grid and the bitmap image;
@@ -49,7 +50,10 @@ namespace IBCompSciProject.Loop
 
         }
 
+        #endregion
 
+
+        bool _fromRight = true;
 
         public void IterationLoop(float x, float y, bool isMouseDown)
         {
@@ -58,7 +62,35 @@ namespace IBCompSciProject.Loop
                 drawAt(x, y, 14);
             }
             drawToBitmap();
+
+            _fromRight = !_fromRight;
+
+
+
+            if (_fromRight)
+            {
+                for (int xpos = _width - 1; xpos >= 0; xpos--)
+                {
+                    for (int ypos = 0; ypos < _height; ypos++)
+                    {
+                        ProcessPixel(xpos, ypos);
+                    }
+                }
+
+            } else
+            {
+                for(int xpos = 0; xpos < _width; xpos++)
+                {
+                    for (int ypos = 0; ypos < _height; ypos++)
+                    {
+                        ProcessPixel(xpos, ypos);
+                    }
+                }
+            }
+
+
         }
+        #region Drawing
 
         private void drawToBitmap()
         {
@@ -96,15 +128,138 @@ namespace IBCompSciProject.Loop
 
                     if (xpos < _width && ypos < _height && xpos >= 0 && ypos >= 0)
                     {
-                        _grid[xpos, ypos].color = Color.CadetBlue;
+                        _grid[xpos, ypos] = new Cell(Cell.SandColor(), Cell.Type.sand);
                     }
                 }
 
             }
 
         }
+        #endregion
+
+        #region Procesing
+        coord place = new coord(0, 0);
+        Cell c;
+
+        public void ProcessPixel(int x, int y)
+        {
+            c = _grid[x, y];
+            place.x = x;
+            place.y = y;
+
+            switch (c.type)
+            {
+                case Cell.Type.sand:
+                    SandFall();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        #region Sand
+        private void SandFall()
+        {
+            if(SandCanMove(GetCell(place, coord.Bottom).type))
+            {
+                Swap(place, place + coord.Bottom);
+            }
+
+            if(_rand.Next(0, 2) == 0)
+            {
+                if (SandCanMove(GetCell(place, coord.BotRight).type))
+                {
+                    Swap(place, place + coord.BotRight);
+                }
+
+                if (SandCanMove(GetCell(place, coord.BotLeft).type))
+                {
+                    Swap(place, place + coord.BotLeft);
+                }
+            }
+            else
+            {
+                if (SandCanMove(GetCell(place, coord.BotLeft).type))
+                {
+                    Swap(place, place + coord.BotLeft);
+                }
+
+                if (SandCanMove(GetCell(place, coord.BotRight).type))
+                {
+                    Swap(place, place + coord.BotRight);
+                }
+
+            }
+
+        }
+        private bool SandCanMove(Cell.Type type)
+        {
+            bool can = false;
+            switch (type)
+            {
+                case Cell.Type.empty:
+                    return true;
+                case Cell.Type.water:
+                    return true;
+            }
+            return can;
+        }
+
+        #endregion
+
+        #region Tools
+
+        private void Swap(coord a, coord b)
+        {
+            if (IsSafe(a) == false || IsSafe(b) == false)
+            {
+                return;
+            }
+            Cell temp = GetCell(a);
+            SetCell(a, GetCell(b));
+            SetCell(b, temp);
+        }
+
+        private Cell GetCell(coord a)
+        {
+            if(IsSafe(a) == false)
+            {
+                return new Cell(Cell.Type.barrier);
+            }
+            return _grid[a.x, a.y];
+        }
+        private Cell GetCell(coord a, coord direction)
+        {
+            if (IsSafe(a + direction) == false)
+            {
+                return new Cell(Cell.Type.barrier);
+            }
+            coord temp = a + direction;
+            return _grid[temp.x, temp.y];
+        }
+
+        private void SetCell(coord a, Cell c)
+        {
+            if (IsSafe(a) == false)
+            {
+                return;
+            }
+            _grid[a.x, a.y] = c;
+        }
+
+        private bool IsSafe(coord c)
+        {
+            if (c.x >= _width || c.x < 0 || c.y >= _height || c.y < 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
 
 
+        #endregion
         //https://stackoverflow.com/questions/15696812/how-to-set-relative-path-to-images-directory-inside-c-sharp-project
     }
 

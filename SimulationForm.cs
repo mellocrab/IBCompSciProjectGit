@@ -47,6 +47,7 @@ namespace IBCompSciProject
                 try
                 {
                     point = PointToClient(Cursor.Position);
+
                 } catch(Exception e)
                 {
 

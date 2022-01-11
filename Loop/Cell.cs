@@ -10,6 +10,9 @@ namespace IBCompSciProject.Loop
 {
     public class Cell
     {
+        private static readonly Random random = new Random();
+
+
         public Color color { get; set; } 
         public  Type type { get; set; }
 
@@ -58,7 +61,32 @@ namespace IBCompSciProject.Loop
             empty,
             solid,
             sand,
-            water
+            water,
+            barrier
         }
+
+        #region Colors
+
+        public static Color RandomColor(float size)
+        {
+
+            return Color.FromArgb((int)(random.NextDouble() * size * 255), (int)(random.NextDouble() * size * 255), (int)(random.NextDouble() * size * 255));
+        }
+
+        public static Color AddColor(Color a, Color b)
+        {
+            return ColorClamp(a.R + b.R, a.G + b.G, a.B + b.B);
+        }
+        public static Color SandColor()
+        {
+            return AddColor(Color.SandyBrown, RandomColor(.1f));
+        }
+
+        public static Color ColorClamp(int r, int g, int b)
+        {
+            return Color.FromArgb(Math.Min((int)r, 255), Math.Min((int)g, 255), Math.Min((int)b, 255));
+            
+        }
+        #endregion
     }
 }

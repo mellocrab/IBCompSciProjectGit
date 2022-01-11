@@ -30,5 +30,44 @@ namespace IBCompSciProject.Loop
         {
             return "(" + x + ", " + y + ")";
         }
+
+        #region StaticCoords
+        public static coord Bottom
+        {
+            get { return new coord(0, -1);  }
+        }
+        public static coord Top
+        {
+            get { return new coord(0, 1); }
+        }
+        public static coord Right
+        {
+            get { return new coord(1, 0); }
+        }
+        public static coord Left
+        {
+            get { return new coord(-1, 0); }
+        }
+        public static coord BotLeft
+        {
+            get { return new coord(-1, -1); }
+        }
+        public static coord BotRight
+        {
+            get { return new coord(-1, 1); }
+        }
+        public static coord TopLeft
+        {
+            get { return new coord(1, -1); }
+        }
+        public static coord TopRight
+        {
+            get { return new coord(1, 1); }
+        }
+        public static coord Zero
+        {
+            get { return new coord(0, 0); }
+        }
+        #endregion
     }
 }
