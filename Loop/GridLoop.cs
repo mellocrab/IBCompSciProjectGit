@@ -87,7 +87,7 @@ namespace IBCompSciProject.Loop
                     }
                 }
             }
-
+            processSwap = !processSwap;
 
         }
         #region Drawing
@@ -140,12 +140,20 @@ namespace IBCompSciProject.Loop
         #region Procesing
         coord place = new coord(0, 0);
         Cell c;
+        bool processSwap = true;
+
 
         public void ProcessPixel(int x, int y)
         {
             c = _grid[x, y];
             place.x = x;
             place.y = y;
+            if(c.processed == processSwap)
+            {
+                return;
+            }
+            
+            c.processed = processSwap;
 
             switch (c.type)
             {
@@ -160,33 +168,38 @@ namespace IBCompSciProject.Loop
         #region Sand
         private void SandFall()
         {
-            if(SandCanMove(GetCell(place, coord.Bottom).type))
+            if(SandCanMove(GetCell(place + coord.Top).type))
             {
-                Swap(place, place + coord.Bottom);
+                Swap(place, place + coord.Top);
+                return;
             }
 
             if(_rand.Next(0, 2) == 0)
             {
-                if (SandCanMove(GetCell(place, coord.BotRight).type))
+                if (SandCanMove(GetCell(place + coord.TopRight).type))
                 {
-                    Swap(place, place + coord.BotRight);
+                    Swap(place, place + coord.TopRight);
+                    return;
                 }
 
-                if (SandCanMove(GetCell(place, coord.BotLeft).type))
+                if (SandCanMove(GetCell(place + coord.TopLeft).type))
                 {
-                    Swap(place, place + coord.BotLeft);
+                    Swap(place, place + coord.TopLeft);
+                    return;
                 }
             }
             else
             {
-                if (SandCanMove(GetCell(place, coord.BotLeft).type))
+                if (SandCanMove(GetCell(place + coord.TopLeft).type))
                 {
-                    Swap(place, place + coord.BotLeft);
+                    Swap(place, place + coord.TopLeft);
+                    return;
                 }
 
-                if (SandCanMove(GetCell(place, coord.BotRight).type))
+                if (SandCanMove(GetCell(place + coord.TopRight).type))
                 {
-                    Swap(place, place + coord.BotRight);
+                    Swap(place, place + coord.TopRight);
+                    return;
                 }
 
             }

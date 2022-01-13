@@ -19,6 +19,8 @@ namespace IBCompSciProject.Loop
         public float velocityX { get; set; }
         public float velocityY { get; set; }
 
+        public bool processed = false;
+
 
         //Constructors
         #region Constructors
