@@ -24,6 +24,9 @@ namespace IBCompSciProject.Loop
         //For random numbers
         Random _rand;
 
+        //Gravity
+        float gravity = 1f;
+
         #region Constructor
         public GridLoop(int width, int height)
         {
@@ -71,7 +74,7 @@ namespace IBCompSciProject.Loop
             {
                 for (int xpos = _width - 1; xpos >= 0; xpos--)
                 {
-                    for (int ypos = 0; ypos < _height; ypos++)
+                    for (int ypos = _height - 1; ypos >= 0; ypos--)
                     {
                         ProcessPixel(xpos, ypos);
                     }
@@ -81,7 +84,8 @@ namespace IBCompSciProject.Loop
             {
                 for(int xpos = 0; xpos < _width; xpos++)
                 {
-                    for (int ypos = 0; ypos < _height; ypos++)
+                    for (int ypos = _height-1; ypos >= 0 ; ypos--)		
+
                     {
                         ProcessPixel(xpos, ypos);
                     }
@@ -168,37 +172,58 @@ namespace IBCompSciProject.Loop
         #region Sand
         private void SandFall()
         {
-            if(SandCanMove(GetCell(place + coord.Top).type))
+            c.velocityY += gravity;
+
+            int moveMax = (int)Math.Round(c.velocityY);
+
+            int amountMoved = 0;
+
+            while (moveMax > 0)
             {
-                Swap(place, place + coord.Top);
+                if (SandCanMove(GetCell(place + (coord.Bottom * (amountMoved + 1))).type))
+                {
+                    amountMoved++;
+                    moveMax--;
+                }
+                else
+                {
+                    c.velocityY = 0;
+                    break;
+                }
+
+            }
+            Swap(place, place + (coord.Bottom * amountMoved));
+
+            if(amountMoved > 0)
+            {
                 return;
             }
 
-            if(_rand.Next(0, 2) == 0)
+            if (_rand.Next(0, 2) == 0)
             {
-                if (SandCanMove(GetCell(place + coord.TopRight).type))
+                if (SandCanMove(GetCell(place + coord.BotRight).type))
                 {
-                    Swap(place, place + coord.TopRight);
+                    Swap(place, place + coord.BotRight);
                     return;
                 }
 
-                if (SandCanMove(GetCell(place + coord.TopLeft).type))
+                if (SandCanMove(GetCell(place + coord.BotLeft).type))
                 {
-                    Swap(place, place + coord.TopLeft);
+                    Swap(place, place + coord.BotLeft);
                     return;
                 }
             }
             else
             {
-                if (SandCanMove(GetCell(place + coord.TopLeft).type))
+                if (SandCanMove(GetCell(place + coord.BotLeft).type))
                 {
-                    Swap(place, place + coord.TopLeft);
+                    Swap(place, place + coord.BotLeft);
                     return;
                 }
 
-                if (SandCanMove(GetCell(place + coord.TopRight).type))
+                if (SandCanMove(GetCell(place + coord.BotRight).type))
                 {
-                    Swap(place, place + coord.TopRight);
+                    Swap(place, place + coord.BotRight);
                     return;
                 }
 

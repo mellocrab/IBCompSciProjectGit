@@ -24,6 +24,8 @@ namespace IBCompSciProject.Loop
 
         public static coord operator +(coord a, coord b) => new coord(a.x + b.x, a.y + b.y);
         public static coord operator -(coord a, coord b) => new coord(a.x - b.x, a.y - b.y);
+        public static coord operator *(int a, coord b) => new coord(a * b.x, a * b.y);
+        public static coord operator *(coord b, int a) => new coord(a * b.x, a * b.y);
 
 
         public override String ToString()
@@ -32,11 +34,11 @@ namespace IBCompSciProject.Loop
         }
 
         #region StaticCoords
-        public static coord Bottom
+        public static coord Top
         {
             get { return new coord(0, -1);  }
         }
-        public static coord Top
+        public static coord Bottom
         {
             get { return new coord(0, 1); }
         }
@@ -50,19 +52,19 @@ namespace IBCompSciProject.Loop
         }
         public static coord BotLeft
         {
-            get { return new coord(-1, -1); }
+            get { return new coord(-1, 1); }
         }
         public static coord BotRight
         {
-            get { return new coord(1, -1); }
+            get { return new coord(1, 1); }
         }
         public static coord TopLeft
         {
-            get { return new coord(-1, 1); }
+            get { return new coord(-1, -1); }
         }
         public static coord TopRight
         {
-            get { return new coord(1, 1); }
+            get { return new coord(1, -1); }
         }
         public static coord Zero
         {
