@@ -79,14 +79,25 @@ namespace IBCompSciProject.Loop
         {
             return ColorClamp(a.R + b.R, a.G + b.G, a.B + b.B);
         }
+
+        public static Color LerpColor(Color a, Color b, float t)
+        {
+            return ColorClamp((int)((b.R - a.R) * t + a.R), (int)((b.G - a.G) * t + a.G), (int)((b.B - a.B) * t + a.B));
+        }
+
         public static Color SandColor()
         {
             return AddColor(Color.SandyBrown, RandomColor(.1f));
         }
 
+        public static Color WaterColor(float velocity)
+        {
+            return LerpColor(Color.RoyalBlue, Color.AliceBlue, velocity);
+        }
+
         public static Color ColorClamp(int r, int g, int b)
         {
-            return Color.FromArgb(Math.Min((int)r, 255), Math.Min((int)g, 255), Math.Min((int)b, 255));
+            return Color.FromArgb(Math.Max(Math.Min((int)r, 255), 0), Math.Max(Math.Min((int)g, 255), 0), Math.Max(Math.Min((int)b, 255), 0));
             
         }
         #endregion

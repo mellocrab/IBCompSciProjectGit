@@ -25,7 +25,7 @@ namespace IBCompSciProject.Loop
         Random _rand;
 
         //Gravity
-        float gravity = 1f;
+        float gravity = .5f;
 
         #region Constructor
         public GridLoop(int width, int height)
@@ -132,7 +132,7 @@ namespace IBCompSciProject.Loop
 
                     if (xpos < _width && ypos < _height && xpos >= 0 && ypos >= 0)
                     {
-                        _grid[xpos, ypos] = new Cell(Cell.SandColor(), Cell.Type.sand);
+                        _grid[xpos, ypos] = new Cell(Color.AliceBlue, Cell.Type.water);
                     }
                 }
 
@@ -163,6 +163,9 @@ namespace IBCompSciProject.Loop
             {
                 case Cell.Type.sand:
                     SandFall();
+                    break;
+                case Cell.Type.water:
+                    WaterFall();
                     break;
                 default:
                     break;
@@ -239,6 +242,118 @@ namespace IBCompSciProject.Loop
                     return true;
                 case Cell.Type.water:
                     return true;
+            }
+            return can;
+        }
+
+        #endregion
+        #region Water
+        private void WaterFall()
+        {
+            c.color = Cell.WaterColor(c.velocityX);
+
+            c.velocityY += gravity;
+
+            int moveMax = (int)Math.Round(c.velocityY);
+
+            int amountMoved = 0;
+
+            while (moveMax > 0)
+            {
+                if (WaterCanMove(GetCell(place + (coord.Bottom * (amountMoved + 1))).type))
+                {
+                    amountMoved++;
+                    moveMax--;
+                }
+                else
+                {
+                    c.velocityY = 0;
+                    break;
+                }
+
+            }
+            Swap(place, place + (coord.Bottom * amountMoved));
+
+            c.velocityX = Math.Min(1, c.velocityX + .05f);
+
+
+            if (amountMoved > 0)
+            {
+                return;
+            }
+
+
+
+            if (_rand.Next(0, 2) == 0)
+            {
+                if (WaterCanMove(GetCell(place + coord.BotRight).type))
+                {
+                    Swap(place, place + coord.BotRight);
+                    return;
+                }
+
+                if (WaterCanMove(GetCell(place + coord.BotLeft).type))
+                {
+                    Swap(place, place + coord.BotLeft);
+                    return;
+                }
+            }
+            else
+            {
+                if (WaterCanMove(GetCell(place + coord.BotLeft).type))
+                {
+                    Swap(place, place + coord.BotLeft);
+                    return;
+                }
+
+                if (WaterCanMove(GetCell(place + coord.BotRight).type))
+                {
+                    Swap(place, place + coord.BotRight);
+                    return;
+                }
+
+            }
+
+            if (_rand.Next(0, 2) == 0)
+            {
+                if (WaterCanMove(GetCell(place + coord.Right).type))
+                {
+                    Swap(place, place + coord.Right);
+                    return;
+                }
+
+                if (WaterCanMove(GetCell(place + coord.Left).type))
+                {
+                    Swap(place, place + coord.Left);
+                    return;
+                }
+            }
+            else
+            {
+                if (WaterCanMove(GetCell(place + coord.Left).type))
+                {
+                    Swap(place, place + coord.Left);
+                    return;
+                }
+
+                if (WaterCanMove(GetCell(place + coord.Right).type))
+                {
+                    Swap(place, place + coord.Right);
+                    return;
+                }
+
+            }
+            c.velocityX = Math.Max(0, c.velocityX - .07f);
+
+        }
+        private bool WaterCanMove(Cell.Type type)
+        {
+            bool can = false;
+            switch (type)
+            {
+                case Cell.Type.empty:
+                    return true;
+
             }
             return can;
         }
