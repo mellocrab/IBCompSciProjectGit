@@ -8,16 +8,19 @@ namespace IBCompSciProject.Loop
 {
     public struct coord
     {
+
+        //This class represents 2D grid coordinates with x and y.
         public int x;
         public int y;
 
+        //Constructor
         public coord(int x, int y)
         {
             this.x = x;
             this.y = y;
         }
 
-
+        //These allow for operations on the coords, such as adding and multiplying by a scalar.
         public static coord operator +(coord a) => a;
         public static coord operator -(coord a) => new coord(-a.x, -a.y);
 
@@ -28,6 +31,7 @@ namespace IBCompSciProject.Loop
         public static coord operator *(coord b, int a) => new coord(a * b.x, a * b.y);
 
 
+        //String representation
         public override String ToString()
         {
             return "(" + x + ", " + y + ")";
