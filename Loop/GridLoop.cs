@@ -56,6 +56,8 @@ namespace IBCompSciProject.Loop
         #endregion
 
 
+        // To avoid bias to one side of the grid, holds whether the process should iterate from the left of the grid, or the right
+        // It is alternativly used to aid with the avoidance of double processing.
         bool _fromRight = true;
 
         public void IterationLoop(float x, float y, bool isMouseDown)
@@ -94,8 +96,12 @@ namespace IBCompSciProject.Loop
             processSwap = !processSwap;
 
         }
+        //The following are used to write the grid color data to a bitmap and display it on screen. Additionally
+        //They are used to aid with player input and mouse manipulation of the grid values. 
         #region Drawing
 
+
+        //Set color values of bitmap to that of the grid
         private void drawToBitmap()
         {
             for(int x = 0; x < _width; x++)
@@ -107,16 +113,17 @@ namespace IBCompSciProject.Loop
             }
         }
 
+
+        //Used to aid with player input. Draws a circle of a specific pixel value.
         private void drawAt(double x, double y, int radius)
         {
             int centerX = (int)(x * _width);
             int centerY = (int)(y * _height);
 
-            Console.WriteLine(centerX + "-" + centerY);
-
-
+            //Quality of the circle. Uses more iteration samples to draw cirlce
             int quality = 56;
 
+            //Use trigonometry to draw circle. Use sin and cos to iterate over various degrees. Use radius to determine how far out to draw.
             for (int i = 0; i < quality; i++)
             {
                 double radians = (Math.PI * 2) * ((float)i / quality);
@@ -141,6 +148,7 @@ namespace IBCompSciProject.Loop
         }
         #endregion
 
+        //For the actual processes of the games physics simulation
         #region Procesing
         coord place = new coord(0, 0);
         Cell c;
