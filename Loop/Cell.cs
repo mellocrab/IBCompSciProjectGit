@@ -106,6 +106,13 @@ namespace IBCompSciProject.Loop
             return AddColor(Color.SandyBrown, RandomColor(.1f));
         }
 
+
+        //For cells of solid type. Get a neutral color with slight random variation.
+        public static Color SolidColor()
+        {
+            return AddColor(Color.RosyBrown, RandomColor(.1f));
+        }
+
         //For cells of water type. Interpolate between shades of blue based on velocity.
         public static Color WaterColor(float velocity)
         {

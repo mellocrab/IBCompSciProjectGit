@@ -27,6 +27,8 @@ namespace IBCompSciProject.Loop
         //Gravity
         float gravity = .5f;
 
+        
+
         #region Constructor
         public GridLoop(int width, int height)
         {
@@ -60,11 +62,11 @@ namespace IBCompSciProject.Loop
         // It is alternativly used to aid with the avoidance of double processing.
         bool _fromRight = true;
 
-        public void IterationLoop(float x, float y, bool isMouseDown)
+        public void IterationLoop(float x, float y, bool isMouseDown, Cell.Type toDraw, int radius)
         {
             if (isMouseDown)
             {
-                drawAt(x, y, 14);
+                drawAt(x, y, radius, toDraw);
             }
             drawToBitmap();
 
@@ -115,13 +117,13 @@ namespace IBCompSciProject.Loop
 
 
         //Used to aid with player input. Draws a circle of a specific pixel value.
-        private void drawAt(double x, double y, int radius)
+        private void drawAt(double x, double y, int radius, Cell.Type type)
         {
             int centerX = (int)(x * _width);
             int centerY = (int)(y * _height);
 
             //Quality of the circle. Uses more iteration samples to draw cirlce
-            int quality = 56;
+            int quality = 8 * radius;
 
             //Use trigonometry to draw circle. Use sin and cos to iterate over various degrees. Use radius to determine how far out to draw.
             for (int i = 0; i < quality; i++)
@@ -139,13 +141,35 @@ namespace IBCompSciProject.Loop
 
                     if (xpos < _width && ypos < _height && xpos >= 0 && ypos >= 0)
                     {
-                        _grid[xpos, ypos] = new Cell(Color.AliceBlue, Cell.Type.water);
+                        _grid[xpos, ypos] = getCellByType(type);
                     }
                 }
 
             }
 
         }
+
+        private Cell getCellByType(Cell.Type type)
+        {
+            switch (type)
+            {
+                case Cell.Type.water:
+                    return new Cell(Color.AliceBlue, Cell.Type.water);
+
+                case Cell.Type.sand:
+                    return new Cell(Cell.SandColor(), Cell.Type.sand);
+
+                case Cell.Type.empty:
+                    return new Cell(Color.White, Cell.Type.empty);
+
+                case Cell.Type.solid:
+                    return new Cell(Cell.SolidColor(), Cell.Type.solid);
+                default:
+                    return new Cell(Color.White, Cell.Type.water);
+
+            }
+        }
+
         #endregion
 
         //For the actual processes of the games physics simulation
@@ -210,15 +234,17 @@ namespace IBCompSciProject.Loop
                 return;
             }
 
+           
+
             if (_rand.Next(0, 2) == 0)
             {
-                if (SandCanMove(GetCell(place + coord.BotRight).type))
+                if (SandCanMoveLiquid(GetCell(place + coord.BotRight).type))
                 {
                     Swap(place, place + coord.BotRight);
                     return;
                 }
 
-                if (SandCanMove(GetCell(place + coord.BotLeft).type))
+                if (SandCanMoveLiquid(GetCell(place + coord.BotLeft).type))
                 {
                     Swap(place, place + coord.BotLeft);
                     return;
@@ -226,22 +252,37 @@ namespace IBCompSciProject.Loop
             }
             else
             {
-                if (SandCanMove(GetCell(place + coord.BotLeft).type))
+                if (SandCanMoveLiquid(GetCell(place + coord.BotLeft).type))
                 {
                     Swap(place, place + coord.BotLeft);
                     return;
                 }
 
-                if (SandCanMove(GetCell(place + coord.BotRight).type))
+                if (SandCanMoveLiquid(GetCell(place + coord.BotRight).type))
                 {
                     Swap(place, place + coord.BotRight);
                     return;
                 }
 
             }
-
+            if (SandCanMoveLiquid(GetCell(place + coord.Bottom).type))
+            {
+                Swap(place, place + coord.Bottom);
+            }
         }
         private bool SandCanMove(Cell.Type type)
+        {
+            bool can = false;
+            switch (type)
+            {
+                case Cell.Type.empty:
+                    return true;
+                case Cell.Type.water:
+                    return false;
+            }
+            return can;
+        }
+        private bool SandCanMoveLiquid(Cell.Type type)
         {
             bool can = false;
             switch (type)
@@ -253,7 +294,6 @@ namespace IBCompSciProject.Loop
             }
             return can;
         }
-
         #endregion
         #region Water
         private void WaterFall()

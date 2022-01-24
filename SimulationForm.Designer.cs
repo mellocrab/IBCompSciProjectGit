@@ -29,19 +29,28 @@ namespace IBCompSciProject
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.btn_sand = new System.Windows.Forms.Button();
             this.pbox_main = new System.Windows.Forms.PictureBox();
+            this.btn_water = new System.Windows.Forms.Button();
+            this.btn_air = new System.Windows.Forms.Button();
+            this.btn_stone = new System.Windows.Forms.Button();
+            this.tbar_radius = new System.Windows.Forms.TrackBar();
+            this.lbl_radius = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_main)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbar_radius)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // btn_sand
             // 
-            this.button1.Location = new System.Drawing.Point(713, 34);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btn_sand.BackColor = System.Drawing.Color.Yellow;
+            this.btn_sand.ForeColor = System.Drawing.Color.SandyBrown;
+            this.btn_sand.Location = new System.Drawing.Point(713, 34);
+            this.btn_sand.Name = "btn_sand";
+            this.btn_sand.Size = new System.Drawing.Size(75, 23);
+            this.btn_sand.TabIndex = 0;
+            this.btn_sand.Text = "Sand";
+            this.btn_sand.UseVisualStyleBackColor = false;
+            this.btn_sand.Click += new System.EventHandler(this.btn_sand_Click);
             // 
             // pbox_main
             // 
@@ -50,26 +59,96 @@ namespace IBCompSciProject
             this.pbox_main.Size = new System.Drawing.Size(799, 452);
             this.pbox_main.TabIndex = 1;
             this.pbox_main.TabStop = false;
+            this.pbox_main.Click += new System.EventHandler(this.pbox_main_Click);
+            // 
+            // btn_water
+            // 
+            this.btn_water.BackColor = System.Drawing.Color.MidnightBlue;
+            this.btn_water.ForeColor = System.Drawing.Color.LightSteelBlue;
+            this.btn_water.Location = new System.Drawing.Point(713, 63);
+            this.btn_water.Name = "btn_water";
+            this.btn_water.Size = new System.Drawing.Size(75, 23);
+            this.btn_water.TabIndex = 2;
+            this.btn_water.Text = "Water";
+            this.btn_water.UseVisualStyleBackColor = false;
+            this.btn_water.Click += new System.EventHandler(this.btn_water_Click);
+            // 
+            // btn_air
+            // 
+            this.btn_air.BackColor = System.Drawing.Color.NavajoWhite;
+            this.btn_air.ForeColor = System.Drawing.Color.Goldenrod;
+            this.btn_air.Location = new System.Drawing.Point(713, 92);
+            this.btn_air.Name = "btn_air";
+            this.btn_air.Size = new System.Drawing.Size(75, 23);
+            this.btn_air.TabIndex = 3;
+            this.btn_air.Text = "Air";
+            this.btn_air.UseVisualStyleBackColor = false;
+            this.btn_air.Click += new System.EventHandler(this.btn_air_Click);
+            // 
+            // btn_stone
+            // 
+            this.btn_stone.BackColor = System.Drawing.Color.Gray;
+            this.btn_stone.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btn_stone.Location = new System.Drawing.Point(713, 121);
+            this.btn_stone.Name = "btn_stone";
+            this.btn_stone.Size = new System.Drawing.Size(75, 23);
+            this.btn_stone.TabIndex = 4;
+            this.btn_stone.Text = "Stone";
+            this.btn_stone.UseVisualStyleBackColor = false;
+            this.btn_stone.Click += new System.EventHandler(this.btn_stone_Click);
+            // 
+            // tbar_radius
+            // 
+            this.tbar_radius.Location = new System.Drawing.Point(1, 12);
+            this.tbar_radius.Maximum = 20;
+            this.tbar_radius.Minimum = 5;
+            this.tbar_radius.Name = "tbar_radius";
+            this.tbar_radius.Size = new System.Drawing.Size(122, 45);
+            this.tbar_radius.TabIndex = 5;
+            this.tbar_radius.Value = 10;
+            this.tbar_radius.Scroll += new System.EventHandler(this.tbar_radius_Scroll);
+            // 
+            // lbl_radius
+            // 
+            this.lbl_radius.AutoSize = true;
+            this.lbl_radius.Location = new System.Drawing.Point(28, 44);
+            this.lbl_radius.Name = "lbl_radius";
+            this.lbl_radius.Size = new System.Drawing.Size(67, 13);
+            this.lbl_radius.TabIndex = 6;
+            this.lbl_radius.Text = "BrushRadius";
+            this.lbl_radius.Click += new System.EventHandler(this.label1_Click);
             // 
             // SimulationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.lbl_radius);
+            this.Controls.Add(this.tbar_radius);
+            this.Controls.Add(this.btn_stone);
+            this.Controls.Add(this.btn_air);
+            this.Controls.Add(this.btn_water);
+            this.Controls.Add(this.btn_sand);
             this.Controls.Add(this.pbox_main);
             this.Name = "SimulationForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pbox_main)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbar_radius)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btn_sand;
         private System.Windows.Forms.PictureBox pbox_main;
+        private System.Windows.Forms.Button btn_water;
+        private System.Windows.Forms.Button btn_air;
+        private System.Windows.Forms.Button btn_stone;
+        private System.Windows.Forms.TrackBar tbar_radius;
+        private System.Windows.Forms.Label lbl_radius;
     }
 }
 

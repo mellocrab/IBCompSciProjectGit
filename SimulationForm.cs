@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using IBCompSciProject.Loop;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 
 namespace IBCompSciProject
@@ -25,12 +26,20 @@ namespace IBCompSciProject
         private int _width = 256;
         private int _height = 128;
 
+        private Cell.Type _currentDrawType;
+
+       
+        private int _brushRadius;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             myGrid = new GridLoop(_width, _height);
 
             pbox_main.SizeMode = PictureBoxSizeMode.StretchImage;
             pbox_main.Image = myGrid._image;
+
+            _brushRadius = tbar_radius.Value;
+            _currentDrawType = Cell.Type.sand;
 
             UpdateLoop();
         }
@@ -53,7 +62,7 @@ namespace IBCompSciProject
 
                 }
 
-                if (Control.MouseButtons == MouseButtons.Left)
+                if (Control.MouseButtons == MouseButtons.Right)
                 {
                     isMouseDown = true;
                 }
@@ -62,11 +71,52 @@ namespace IBCompSciProject
                 float valY = (float)(point.Y - pbox_main.Bounds.Top) / (pbox_main.Bounds.Bottom - pbox_main.Bounds.Top);
 
 
-                myGrid.IterationLoop(valX, valY, isMouseDown);
+                myGrid.IterationLoop(valX, valY, isMouseDown, _currentDrawType, _brushRadius);
                 pbox_main.Refresh();
 
                 await Task.Delay(8);
             }
+        }
+
+
+
+        private void btn_sand_Click(object sender, EventArgs e)
+        {
+            _currentDrawType = Cell.Type.sand;
+        }
+
+        private void btn_water_Click(object sender, EventArgs e)
+        {
+            _currentDrawType = Cell.Type.water;
+        }
+        private void btn_air_Click(object sender, EventArgs e)
+        {
+            _currentDrawType = Cell.Type.empty;
+
+        }
+
+        private void btn_stone_Click(object sender, EventArgs e)
+        {
+            _currentDrawType = Cell.Type.solid;
+
+        }
+
+       
+
+        private void tbar_radius_Scroll(object sender, EventArgs e)
+        {
+            _brushRadius = tbar_radius.Value;
+        }
+
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pbox_main_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
