@@ -36,6 +36,7 @@ namespace IBCompSciProject
             this.btn_stone = new System.Windows.Forms.Button();
             this.tbar_radius = new System.Windows.Forms.TrackBar();
             this.lbl_radius = new System.Windows.Forms.Label();
+            this.btn_back = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_main)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbar_radius)).BeginInit();
             this.SuspendLayout();
@@ -99,11 +100,11 @@ namespace IBCompSciProject
             // 
             // tbar_radius
             // 
-            this.tbar_radius.Location = new System.Drawing.Point(1, 12);
+            this.tbar_radius.Location = new System.Drawing.Point(157, 12);
             this.tbar_radius.Maximum = 20;
             this.tbar_radius.Minimum = 5;
             this.tbar_radius.Name = "tbar_radius";
-            this.tbar_radius.Size = new System.Drawing.Size(122, 45);
+            this.tbar_radius.Size = new System.Drawing.Size(171, 45);
             this.tbar_radius.TabIndex = 5;
             this.tbar_radius.Value = 10;
             this.tbar_radius.Scroll += new System.EventHandler(this.tbar_radius_Scroll);
@@ -111,18 +112,29 @@ namespace IBCompSciProject
             // lbl_radius
             // 
             this.lbl_radius.AutoSize = true;
-            this.lbl_radius.Location = new System.Drawing.Point(28, 44);
+            this.lbl_radius.Location = new System.Drawing.Point(209, 44);
             this.lbl_radius.Name = "lbl_radius";
             this.lbl_radius.Size = new System.Drawing.Size(67, 13);
             this.lbl_radius.TabIndex = 6;
             this.lbl_radius.Text = "BrushRadius";
             this.lbl_radius.Click += new System.EventHandler(this.label1_Click);
             // 
+            // btn_back
+            // 
+            this.btn_back.Location = new System.Drawing.Point(12, 12);
+            this.btn_back.Name = "btn_back";
+            this.btn_back.Size = new System.Drawing.Size(103, 23);
+            this.btn_back.TabIndex = 7;
+            this.btn_back.Text = "Back To Menu";
+            this.btn_back.UseVisualStyleBackColor = true;
+            this.btn_back.Click += new System.EventHandler(this.btn_back_Click);
+            // 
             // SimulationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_back);
             this.Controls.Add(this.lbl_radius);
             this.Controls.Add(this.tbar_radius);
             this.Controls.Add(this.btn_stone);
@@ -149,6 +161,7 @@ namespace IBCompSciProject
         private System.Windows.Forms.Button btn_stone;
         private System.Windows.Forms.TrackBar tbar_radius;
         private System.Windows.Forms.Label lbl_radius;
+        private System.Windows.Forms.Button btn_back;
     }
 }
 

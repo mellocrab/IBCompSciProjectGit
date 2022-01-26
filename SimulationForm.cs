@@ -125,5 +125,11 @@ namespace IBCompSciProject
         {
 
         }
+
+        private void btn_back_Click(object sender, EventArgs e)
+        {
+            MainMenu.simulationForm.Hide();
+            MainMenu.mainMenu.Show();
+        }
     }
 }

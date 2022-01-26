@@ -16,7 +16,7 @@ namespace IBCompSciProject
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SimulationForm());
+            Application.Run(new MainMenu());
         }
     }
 }
