@@ -33,10 +33,17 @@ namespace IBCompSciProject
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.CenterToScreen();
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
+
+            this.Text = "Simulation!";
+
             myGrid = new GridLoop(_width, _height);
 
             pbox_main.SizeMode = PictureBoxSizeMode.StretchImage;
             pbox_main.Image = myGrid._image;
+            
 
             _brushRadius = tbar_radius.Value;
             _currentDrawType = Cell.Type.sand;
