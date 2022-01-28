@@ -36,12 +36,15 @@ namespace IBCompSciProject
 
         }
 
+        public static byte CurrentMenu;
+
         private void button1_Click(object sender, EventArgs e)
         {
             mainMenu.Hide();
             
             simulationForm.Show();
 
+            CurrentMenu = 1;
         }
     }
 }

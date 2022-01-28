@@ -59,12 +59,13 @@ namespace IBCompSciProject
                 bool isMouseDown = false;
 
                 //Point worldPoint = new Point(Cursor.Position.X, Cursor.Position.Y);
+
                 Point point = new Point();
                 try
                 {
                     point = PointToClient(Cursor.Position);
 
-                } catch(Exception e)
+                } catch (Exception e)
                 {
 
                 }
@@ -82,6 +83,10 @@ namespace IBCompSciProject
                 pbox_main.Refresh();
 
                 await Task.Delay(8);
+                while (MainMenu.CurrentMenu != 1)
+                {
+                    await Task.Delay(100);
+                }
             }
         }
 
@@ -130,6 +135,7 @@ namespace IBCompSciProject
         {
             MainMenu.simulationForm.Hide();
             MainMenu.mainMenu.Show();
+            MainMenu.CurrentMenu = 0;
         }
     }
 }
