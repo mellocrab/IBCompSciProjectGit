@@ -59,7 +59,7 @@ namespace IBCompSciProject.Loop
         public Cell()
         {
 
-            color = Color.White;
+            color = AirColor();
             this.type = Type.empty;
             velocityX = 0;
             velocityY = 0;
@@ -111,6 +111,11 @@ namespace IBCompSciProject.Loop
         public static Color SolidColor()
         {
             return AddColor(Color.RosyBrown, RandomColor(.1f));
+        }
+
+        public static Color AirColor()
+        {
+            return SimulationForm.backgroundColor;
         }
 
         //For cells of water type. Interpolate between shades of blue based on velocity.

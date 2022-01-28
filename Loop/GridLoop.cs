@@ -160,7 +160,7 @@ namespace IBCompSciProject.Loop
                     return new Cell(Cell.SandColor(), Cell.Type.sand);
 
                 case Cell.Type.empty:
-                    return new Cell(Color.White, Cell.Type.empty);
+                    return new Cell(Cell.AirColor(), Cell.Type.empty);
 
                 case Cell.Type.solid:
                     return new Cell(Cell.SolidColor(), Cell.Type.solid);

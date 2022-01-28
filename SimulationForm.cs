@@ -16,7 +16,8 @@ namespace IBCompSciProject
 {
     public partial class SimulationForm : Form
     {
-       
+
+        public static Color backgroundColor = Color.Transparent;
 
         GridLoop myGrid;
 
@@ -32,6 +33,7 @@ namespace IBCompSciProject
         public SimulationForm()
         {
             InitializeComponent();
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -41,6 +43,10 @@ namespace IBCompSciProject
             this.MinimizeBox = true;
 
             this.Text = "Simulation!";
+
+            //this.BackColor = backgroundColor;
+            this.BackgroundImage = Properties.Resources.pexels_pixabay_258112;
+            this.Refresh();
 
             myGrid = new GridLoop(_width, _height);
 
