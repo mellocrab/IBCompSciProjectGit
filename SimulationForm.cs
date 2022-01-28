@@ -16,10 +16,7 @@ namespace IBCompSciProject
 {
     public partial class SimulationForm : Form
     {
-        public SimulationForm()
-        {
-            InitializeComponent();
-        }
+       
 
         GridLoop myGrid;
 
@@ -30,6 +27,12 @@ namespace IBCompSciProject
 
        
         private int _brushRadius;
+
+
+        public SimulationForm()
+        {
+            InitializeComponent();
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {

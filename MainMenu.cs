@@ -46,5 +46,20 @@ namespace IBCompSciProject
 
             CurrentMenu = 1;
         }
+
+        private void lbl_title_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
