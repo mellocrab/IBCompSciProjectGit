@@ -91,13 +91,13 @@ namespace IBCompSciProject.Loop
         //Add the values of two colors together.
         public static Color AddColor(Color a, Color b)
         {
-            return ColorClamp(a.R + b.R, a.G + b.G, a.B + b.B);
+            return ColorClamp(a.R + b.R, a.G + b.G, a.B + b.B, a.A + b.A);
         }
 
         //linearly interpolates between two colors.
         public static Color LerpColor(Color a, Color b, float t)
         {
-            return ColorClamp((int)((b.R - a.R) * t + a.R), (int)((b.G - a.G) * t + a.G), (int)((b.B - a.B) * t + a.B));
+            return ColorClamp( (int)((b.R - a.R) * t + a.R), (int)((b.G - a.G) * t + a.G), (int)((b.B - a.B) * t + a.B), (int)((b.A - a.A) * t + a.A));
         }
 
         //For cells of sand type. Get a sandy color with slight random variation.
@@ -121,7 +121,12 @@ namespace IBCompSciProject.Loop
         //For cells of water type. Interpolate between shades of blue based on velocity.
         public static Color WaterColor(float velocity)
         {
-            return LerpColor(Color.RoyalBlue, Color.AliceBlue, velocity);
+            Color a = Color.RoyalBlue;
+            a = ColorClamp(a.R, a.G, a.B, 200);
+
+
+
+            return LerpColor(a, Color.AliceBlue, velocity);
         }
 
         //Since going above 255 for color values throws and error, clamps it.
@@ -129,6 +134,11 @@ namespace IBCompSciProject.Loop
         {
             return Color.FromArgb(Math.Max(Math.Min((int)r, 255), 0), Math.Max(Math.Min((int)g, 255), 0), Math.Max(Math.Min((int)b, 255), 0));
             
+        }
+        public static Color ColorClamp(int r, int g, int b, int a)
+        {
+            return Color.FromArgb(Math.Max(Math.Min((int)a, 255), 0), Math.Max(Math.Min((int)r, 255), 0), Math.Max(Math.Min((int)g, 255), 0), Math.Max(Math.Min((int)b, 255), 0));
+
         }
         #endregion
     }

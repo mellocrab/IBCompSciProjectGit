@@ -109,6 +109,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\MyImage.jpg" />
+    <None Include="Resources\VerySmall.jpg" />
+    <None Include="Resources\pexels-pixabay-258112-min.jpg" />
     <None Include="Resources\pexels-pixabay-258112.jpg" />
     <None Include="Resources\SkyBackground.jpg" />
     <None Include="Resources\SkyBackground.bmp" />

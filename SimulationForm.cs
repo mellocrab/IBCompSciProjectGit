@@ -45,8 +45,6 @@ namespace IBCompSciProject
             this.Text = "Simulation!";
 
             //this.BackColor = backgroundColor;
-            this.BackgroundImage = Properties.Resources.pexels_pixabay_258112;
-            this.Refresh();
 
             myGrid = new GridLoop(_width, _height);
 

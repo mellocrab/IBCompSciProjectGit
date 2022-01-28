@@ -55,7 +55,8 @@ namespace IBCompSciProject
             // 
             // pbox_main
             // 
-            this.pbox_main.Location = new System.Drawing.Point(1, 1);
+            this.pbox_main.BackColor = System.Drawing.Color.Transparent;
+            this.pbox_main.Location = new System.Drawing.Point(-2, 1);
             this.pbox_main.Name = "pbox_main";
             this.pbox_main.Size = new System.Drawing.Size(799, 452);
             this.pbox_main.TabIndex = 1;
@@ -133,6 +134,8 @@ namespace IBCompSciProject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::IBCompSciProject.Properties.Resources.VerySmall;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btn_back);
             this.Controls.Add(this.lbl_radius);
