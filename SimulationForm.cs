@@ -29,7 +29,10 @@ namespace IBCompSciProject
 
         //This determines the radius of the drawing "brush"
         private int _brushRadius;
+        private bool _previouslyHeldDown;
 
+        private float _previousX;
+        private float _previousY;
 
         //Constructor, intialize components
         public SimulationForm()
@@ -94,11 +97,31 @@ namespace IBCompSciProject
                 float valX = (float)(point.X - pbox_main.Bounds.Left) / (pbox_main.Bounds.Right - pbox_main.Bounds.Left);
                 float valY = (float)(point.Y - pbox_main.Bounds.Top) / (pbox_main.Bounds.Bottom - pbox_main.Bounds.Top);
 
+                List<float> listX = new List<float>();
+                List<float> listY = new List<float>();
 
-                myGrid.IterationLoop(valX, valY, isMouseDown, _currentDrawType, _brushRadius);
+                if (_previouslyHeldDown)
+                {
+                    listX = DrawLine(valX, valY, _previousX, _previousY, out listY);
+                } else
+                {
+                    listX.Add(valX);
+                    listY.Add(valY);
+                }
+
+                myGrid.IterationLoop(listX, listY, isMouseDown, _currentDrawType, _brushRadius);
                 pbox_main.Refresh();
 
                 await Task.Delay(8);
+                if (isMouseDown)
+                {
+                    _previouslyHeldDown = true;
+                    _previousX = valX;
+                    _previousY = valY;
+                } else
+                {
+                    _previouslyHeldDown = false;
+                }
                 while (MainMenu.CurrentMenu != 1)
                 {
                     await Task.Delay(100);
@@ -106,9 +129,55 @@ namespace IBCompSciProject
             }
         }
 
+        
+        private List<float> DrawLine(float newX, float newY, float oldX, float oldY, out List<float> yOutput)
+        {
+            List<float> xlist = new List<float>();
+            List<float> ylist = new List<float>();
 
+            xlist.Add(newX);
+            ylist.Add(newY);
 
-        // Material buttons: These will set the material of the brush
+            float xdif = Math.Abs(newX - oldX);
+            float ydif = Math.Abs(newY - oldY);
+
+            float length = Math.Max(xdif, ydif);
+
+            float xinc = xdif / length;
+            float yinc = ydif / length;
+
+            float xPlace = newX;
+            float yPlace = newY;
+           
+
+            /*
+            for(float i = 0; i < length; i += .02f)
+            {
+                xPlace += xinc * .02f;
+                yPlace += yinc * .02f;
+                
+            }
+            */
+            
+            float f = 0;
+            while(f < 1)
+            {
+                xPlace = Lerp(newX, oldX, f);
+                yPlace = Lerp(newY, oldY, f);
+                xlist.Add(xPlace);
+                ylist.Add(yPlace);
+                f += .2f;
+            }
+
+            yOutput = ylist;
+            return xlist;
+        }
+
+        float Lerp(float a, float b, float t)
+        {
+            return a + (b - a) * t;
+        }
+            // Material buttons: These will set the material of the brush
         #region Input buttons
 
         private void btn_sand_Click(object sender, EventArgs e)

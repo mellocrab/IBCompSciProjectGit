@@ -62,11 +62,14 @@ namespace IBCompSciProject.Loop
         // It is alternativly used to aid with the avoidance of double processing.
         bool _fromRight = true;
 
-        public void IterationLoop(float x, float y, bool isMouseDown, Cell.Type toDraw, int radius)
+        public void IterationLoop(List<float> listx, List<float> listy, bool isMouseDown, Cell.Type toDraw, int radius)
         {
             if (isMouseDown)
             {
-                drawAt(x, y, radius, toDraw);
+                for(int i = 0; i < listx.Count; i++)
+                {
+                    drawAt(listx[i], listy[i], radius, toDraw);
+                }
             }
             drawToBitmap();
 
