@@ -154,11 +154,8 @@ namespace IBCompSciProject
         }
         #endregion
 
-        private void Form1_FormClosed(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
-            Application.Exit();
-        }
+        
+        
 
 
     }

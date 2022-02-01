@@ -59,7 +59,6 @@ namespace IBCompSciProject.Loop
 
         public Cell()
         {
-
             color = AirColor();
             this.type = Type.empty;
             velocityX = 0;
