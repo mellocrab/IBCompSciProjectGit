@@ -10,6 +10,7 @@ namespace IBCompSciProject.Loop
 {
     public class Cell
     {
+
         private static readonly Random random = new Random();
 
 
@@ -115,14 +116,14 @@ namespace IBCompSciProject.Loop
 
         public static Color AirColor()
         {
-            return SimulationForm.backgroundColor;
+            return SimulationForm.BackgroundColor;
         }
 
         //For cells of water type. Interpolate between shades of blue based on velocity.
         public static Color WaterColor(float velocity)
         {
             Color a = Color.RoyalBlue;
-            a = ColorClamp(a.R, a.G, a.B, 200);
+            a = ColorClamp(a.R, a.G, a.B, 170);
 
 
 

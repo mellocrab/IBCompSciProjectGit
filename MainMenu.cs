@@ -61,5 +61,10 @@ namespace IBCompSciProject
         {
             Application.Exit();
         }
+
+        private void Form1_FormClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
