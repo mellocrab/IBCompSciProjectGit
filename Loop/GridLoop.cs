@@ -152,6 +152,7 @@ namespace IBCompSciProject.Loop
 
         }
 
+        private float standardGasDensity = 2000f;
         private Cell getCellByType(Cell.Type type)
         {
             switch (type)
@@ -167,6 +168,10 @@ namespace IBCompSciProject.Loop
 
                 case Cell.Type.solid:
                     return new Cell(Cell.SolidColor(), Cell.Type.solid);
+                case Cell.Type.gas:
+                    Cell c = new Cell(Color.DarkOliveGreen, Cell.Type.gas);
+                    c.velocityX = standardGasDensity;
+                    return c;
                 default:
                     return new Cell(Color.White, Cell.Type.water);
 
@@ -211,6 +216,9 @@ namespace IBCompSciProject.Loop
                     break;
                 case Cell.Type.water:
                     WaterFall();
+                    break;
+                case Cell.Type.gas:
+                    GasProcess();
                     break;
                 default:
                     break;
@@ -285,27 +293,30 @@ namespace IBCompSciProject.Loop
         }
         private bool SandCanMove(Cell.Type type)
         {
-            bool can = false;
+            
             switch (type)
             {
                 case Cell.Type.empty:
                     return true;
                 case Cell.Type.water:
                     return false;
+                case Cell.Type.gas:
+                    return true;
             }
-            return can;
+            return false;
         }
         private bool SandCanMoveLiquid(Cell.Type type)
         {
-            bool can = false;
             switch (type)
             {
                 case Cell.Type.empty:
                     return true;
                 case Cell.Type.water:
                     return true;
+                case Cell.Type.gas:
+                    return true;
             }
-            return can;
+            return false;
         }
         #endregion
         #region Water
@@ -414,6 +425,8 @@ namespace IBCompSciProject.Loop
             {
                 case Cell.Type.empty:
                     return true;
+                case Cell.Type.gas:
+                    return true;
 
             }
             return can;
@@ -421,6 +434,94 @@ namespace IBCompSciProject.Loop
 
         #endregion
 
+        #region Gas
+
+        private float _gasMin = 100;
+
+        public void GasProcess()
+        {
+            
+            c.velocityX -= 1;
+
+            if (c.velocityX < 0)
+            {
+                c = new Cell(Cell.AirColor(), Cell.Type.empty);
+                return;
+            }
+
+            if (c.velocityX < _gasMin)
+            {
+                return;
+            }
+            
+
+            c.color = Cell.GasColor(c.velocityX / standardGasDensity);
+
+            List<Cell> neighborList = new List<Cell>();
+            coord[] coordList = coord.AllNeighbors;
+            foreach(coord c in coordList)
+            {
+                if(_rand.Next(0,2) == 0)
+                {
+                    neighborList.Add(GetCell(place, c));
+                } else
+                {
+                    neighborList.Insert(0, GetCell(place, c));
+                }
+            }
+            int possibleMoves = 1;
+            foreach(Cell n in neighborList)
+            {
+                if (GasCanMove(n.type))
+                {
+                    if(n.type == Cell.Type.gas)
+                    {
+                        if(n.velocityX < c.velocityX)
+                        {
+                            possibleMoves++;
+                            continue;
+                        }
+                    }
+                    possibleMoves++;
+
+                }
+            }
+
+            float distribution = c.velocityX / possibleMoves;
+            float leftOvers = distribution;
+
+            foreach (Cell n in neighborList)
+            {
+                if(n.type == Cell.Type.gas)
+                {
+                    if(n.velocityX >= c.velocityX)
+                    {
+                        leftOvers += distribution;
+                        continue;
+                    }
+                    n.velocityX += distribution;
+                }
+                if(n.type == Cell.Type.empty)
+                {
+                    n.type = Cell.Type.gas;
+                    n.velocityX = distribution;
+                }
+            }
+            c.velocityX = leftOvers;
+
+        }
+        public bool GasCanMove(Cell.Type type)
+        {
+            switch (type)
+            {
+                case Cell.Type.empty:
+                    return true;
+                case Cell.Type.gas:
+                    return true;
+            }
+            return false;
+        }
+        #endregion
         #region Tools
 
         private void Swap(coord a, coord b)

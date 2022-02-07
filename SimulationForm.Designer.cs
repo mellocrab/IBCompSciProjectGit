@@ -38,6 +38,7 @@ namespace IBCompSciProject
             this.lbl_radius = new System.Windows.Forms.Label();
             this.btn_back = new System.Windows.Forms.Button();
             this.btn_clear = new System.Windows.Forms.Button();
+            this.btn_gas = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_main)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbar_radius)).BeginInit();
             this.SuspendLayout();
@@ -141,6 +142,18 @@ namespace IBCompSciProject
             this.btn_clear.UseVisualStyleBackColor = true;
             this.btn_clear.Click += new System.EventHandler(this.btn_clear_Click);
             // 
+            // btn_gas
+            // 
+            this.btn_gas.BackColor = System.Drawing.Color.OliveDrab;
+            this.btn_gas.ForeColor = System.Drawing.Color.Gainsboro;
+            this.btn_gas.Location = new System.Drawing.Point(713, 150);
+            this.btn_gas.Name = "btn_gas";
+            this.btn_gas.Size = new System.Drawing.Size(75, 23);
+            this.btn_gas.TabIndex = 9;
+            this.btn_gas.Text = "Gas";
+            this.btn_gas.UseVisualStyleBackColor = false;
+            this.btn_gas.Click += new System.EventHandler(this.btn_gas_Click);
+            // 
             // SimulationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -148,6 +161,7 @@ namespace IBCompSciProject
             this.BackgroundImage = global::IBCompSciProject.Properties.Resources.VerySmall;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_gas);
             this.Controls.Add(this.btn_clear);
             this.Controls.Add(this.btn_back);
             this.Controls.Add(this.lbl_radius);
@@ -178,6 +192,7 @@ namespace IBCompSciProject
         private System.Windows.Forms.Label lbl_radius;
         private System.Windows.Forms.Button btn_back;
         private System.Windows.Forms.Button btn_clear;
+        private System.Windows.Forms.Button btn_gas;
     }
 }
 

@@ -74,6 +74,28 @@ namespace IBCompSciProject.Loop
         {
             get { return new coord(0, 0); }
         }
+
+        public static coord[] AllNeighbors
+        {
+            get
+            {
+                coord[] list = new coord[]
+
+                {
+                Top,
+                TopRight,
+                Right,
+                BotRight,
+                Bottom,
+                BotLeft,
+                Left,
+                TopLeft
+                };
+
+                return list;
+            }
+            
+        }
         #endregion
     }
 }

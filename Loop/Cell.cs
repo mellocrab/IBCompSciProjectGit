@@ -75,6 +75,7 @@ namespace IBCompSciProject.Loop
             solid,
             sand,
             water,
+            gas,
             barrier
         }
 
@@ -127,6 +128,15 @@ namespace IBCompSciProject.Loop
 
 
             return LerpColor(a, Color.AliceBlue, velocity);
+        }
+
+        public static Color GasColor(float density)
+        {
+            Color a = Color.Green;
+            a = ColorClamp(a.R, a.G, a.B, 0);
+            Color b = Color.Olive;
+            b = ColorClamp(a.R, a.G, a.B, 200);
+            return LerpColor(a, b, density);
         }
 
         //Since going above 255 for color values throws and error, clamps it.

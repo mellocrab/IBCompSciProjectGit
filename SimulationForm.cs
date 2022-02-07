@@ -191,7 +191,10 @@ namespace IBCompSciProject
         {
             _currentDrawType = Cell.Type.solid;
         }
-
+        private void btn_gas_Click(object sender, EventArgs e)
+        {
+            _currentDrawType = Cell.Type.gas;
+        }
         private void tbar_radius_Scroll(object sender, EventArgs e)
         {
             _brushRadius = tbar_radius.Value;
@@ -223,5 +226,7 @@ namespace IBCompSciProject
         {
             myGrid.ClearGrid();
         }
+
+        
     }
 }
