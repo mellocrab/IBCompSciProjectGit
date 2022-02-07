@@ -148,17 +148,9 @@ namespace IBCompSciProject
 
             float xPlace = newX;
             float yPlace = newY;
-           
 
-            /*
-            for(float i = 0; i < length; i += .02f)
-            {
-                xPlace += xinc * .02f;
-                yPlace += yinc * .02f;
-                
-            }
-            */
-            
+            float accuracy = .05f;
+
             float f = 0;
             while(f < 1)
             {
@@ -166,7 +158,7 @@ namespace IBCompSciProject
                 yPlace = Lerp(newY, oldY, f);
                 xlist.Add(xPlace);
                 ylist.Add(yPlace);
-                f += .2f;
+                f += accuracy;
             }
 
             yOutput = ylist;
@@ -221,11 +213,15 @@ namespace IBCompSciProject
             MainMenu.mainMenu.Show();
             MainMenu.CurrentMenu = 0;
         }
+
+
+
+
         #endregion
 
-        
-        
-
-
+        private void btn_clear_Click(object sender, EventArgs e)
+        {
+            myGrid.ClearGrid();
+        }
     }
 }

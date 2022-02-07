@@ -37,6 +37,7 @@ namespace IBCompSciProject
             this.tbar_radius = new System.Windows.Forms.TrackBar();
             this.lbl_radius = new System.Windows.Forms.Label();
             this.btn_back = new System.Windows.Forms.Button();
+            this.btn_clear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbox_main)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbar_radius)).BeginInit();
             this.SuspendLayout();
@@ -130,6 +131,16 @@ namespace IBCompSciProject
             this.btn_back.UseVisualStyleBackColor = true;
             this.btn_back.Click += new System.EventHandler(this.btn_back_Click);
             // 
+            // btn_clear
+            // 
+            this.btn_clear.Location = new System.Drawing.Point(570, 20);
+            this.btn_clear.Name = "btn_clear";
+            this.btn_clear.Size = new System.Drawing.Size(120, 37);
+            this.btn_clear.TabIndex = 8;
+            this.btn_clear.Text = "Clear All";
+            this.btn_clear.UseVisualStyleBackColor = true;
+            this.btn_clear.Click += new System.EventHandler(this.btn_clear_Click);
+            // 
             // SimulationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +148,7 @@ namespace IBCompSciProject
             this.BackgroundImage = global::IBCompSciProject.Properties.Resources.VerySmall;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_clear);
             this.Controls.Add(this.btn_back);
             this.Controls.Add(this.lbl_radius);
             this.Controls.Add(this.tbar_radius);
@@ -165,6 +177,7 @@ namespace IBCompSciProject
         private System.Windows.Forms.TrackBar tbar_radius;
         private System.Windows.Forms.Label lbl_radius;
         private System.Windows.Forms.Button btn_back;
+        private System.Windows.Forms.Button btn_clear;
     }
 }
 

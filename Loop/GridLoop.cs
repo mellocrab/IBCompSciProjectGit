@@ -181,6 +181,16 @@ namespace IBCompSciProject.Loop
         Cell c;
         bool processSwap = true;
 
+        public void ClearGrid()
+        {
+            for (int x = 0; x < _width; x++)
+            {
+                for (int y = 0; y < _height; y++)
+                {
+                    _grid[x, y] = new Cell(Cell.AirColor(), Cell.Type.empty);
+                }
+            }
+        }
 
         public void ProcessPixel(int x, int y)
         {
