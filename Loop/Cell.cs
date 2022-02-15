@@ -28,7 +28,7 @@ namespace IBCompSciProject.Loop
 
         //It is possible for a cell to be processed twice when it is moved. To avoid this, this variable saves whether in the current iteration
         //The cell has been processed.
-        public bool processed = false;
+        public bool processed { get; set; } = false;
 
 
         //Various constructors for the cell. They use different parameters for ease of use. 
@@ -114,6 +114,7 @@ namespace IBCompSciProject.Loop
             return AddColor(Color.RosyBrown, RandomColor(.1f));
         }
 
+        //Returns color of the form background, so it will blend in. 
         public static Color AirColor()
         {
             return SimulationForm.BackgroundColor;
@@ -130,6 +131,7 @@ namespace IBCompSciProject.Loop
             return LerpColor(a, Color.AliceBlue, velocity);
         }
 
+        //Get color for cells of gas type. Based off of paramter density, Interpolate between shades of green
         public static Color GasColor(float density)
         {
             Color a = Color.Green;
@@ -145,6 +147,7 @@ namespace IBCompSciProject.Loop
             return Color.FromArgb(Math.Max(Math.Min((int)r, 255), 0), Math.Max(Math.Min((int)g, 255), 0), Math.Max(Math.Min((int)b, 255), 0));
             
         }
+        //Same thing, but with the color alpha
         public static Color ColorClamp(int r, int g, int b, int a)
         {
             return Color.FromArgb(Math.Max(Math.Min((int)a, 255), 0), Math.Max(Math.Min((int)r, 255), 0), Math.Max(Math.Min((int)g, 255), 0), Math.Max(Math.Min((int)b, 255), 0));

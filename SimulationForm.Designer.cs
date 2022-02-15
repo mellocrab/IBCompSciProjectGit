@@ -63,7 +63,6 @@ namespace IBCompSciProject
             this.pbox_main.Size = new System.Drawing.Size(799, 452);
             this.pbox_main.TabIndex = 1;
             this.pbox_main.TabStop = false;
-            this.pbox_main.Click += new System.EventHandler(this.pbox_main_Click);
             // 
             // btn_water
             // 
@@ -120,7 +119,6 @@ namespace IBCompSciProject
             this.lbl_radius.Size = new System.Drawing.Size(67, 13);
             this.lbl_radius.TabIndex = 6;
             this.lbl_radius.Text = "BrushRadius";
-            this.lbl_radius.Click += new System.EventHandler(this.label1_Click);
             // 
             // btn_back
             // 

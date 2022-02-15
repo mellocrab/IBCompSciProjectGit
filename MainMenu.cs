@@ -12,8 +12,8 @@ namespace IBCompSciProject
 {
     public partial class MainMenu : Form
     {
-        public static Form mainMenu;
-        public static Form simulationForm;
+        private Form _mainMenu;
+        private Form _simulationForm;
 
         public MainMenu()
         {
@@ -29,21 +29,19 @@ namespace IBCompSciProject
             this.MinimizeBox = true;
 
 
-            mainMenu = this;
-            simulationForm = new SimulationForm();
-            simulationForm.Hide();
+            _mainMenu = this;
+            _simulationForm = new SimulationForm();
+            _simulationForm.Hide();
 
 
         }
 
-        public static byte CurrentMenu;
+        public static byte CurrentMenu { get; set; }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            mainMenu.Hide();
-            
-            simulationForm.Show();
-
+            _mainMenu.Hide();
+            _simulationForm.Show();
             CurrentMenu = 1;
         }
 

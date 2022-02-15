@@ -12,29 +12,31 @@ namespace IBCompSciProject.Loop
     {
 
         //Is the bitmap image
-        public Bitmap _image;
+        public Bitmap Image { get; set; }
 
         //Holds Cell Data
         private Cell[,] _grid;
 
         //Stores image width and height;
-        int _width;
-        int _height;
+        private int _width;
+        private int _height;
 
         //For random numbers
         Random _rand;
 
         //Gravity
-        float gravity = .5f;
+        private float _gravity = .5f;
 
-        
+        // To avoid bias to one side of the grid, holds whether the process should iterate from the left of the grid, or the right
+        // It is alternativly used to aid with the avoidance of double processing.
+        private bool _fromRight = true;
 
         #region Constructor
         public GridLoop(int width, int height)
         {
             //Initialize the grid and the bitmap image;
             _grid = new Cell[width, height];
-            _image = new Bitmap(width, height);
+            Image = new Bitmap(width, height);
 
             _width = width;
             _height = height;
@@ -50,20 +52,18 @@ namespace IBCompSciProject.Loop
 
             drawToBitmap();
 
-            //Declare random object
+            //Declare object to handle random number generation
             _rand = new Random(DateTime.Now.Second);
 
         }
 
         #endregion
 
-
-        // To avoid bias to one side of the grid, holds whether the process should iterate from the left of the grid, or the right
-        // It is alternativly used to aid with the avoidance of double processing.
-        bool _fromRight = true;
-
+        
         public void IterationLoop(List<float> listx, List<float> listy, bool isMouseDown, Cell.Type toDraw, int radius)
         {
+            //Check if the mouse is held down. If it is, then call the drawAt() method to paint a circle of cells according to
+            //what the "toDraw" paramter is.
             if (isMouseDown)
             {
                 for(int i = 0; i < listx.Count; i++)
@@ -71,14 +71,16 @@ namespace IBCompSciProject.Loop
                     drawAt(listx[i], listy[i], radius, toDraw);
                 }
             }
+
+            //Transfer the grid color data over to the bitmap image.
             drawToBitmap();
 
+            //The _fromRight varaible stores which direction the grid is processed from in the loop(right to left, or left to right). This prevents bias. 
             _fromRight = !_fromRight;
-
-
 
             if (_fromRight)
             {
+                //Loop from right to left along 2D array, and call the processing method on each individual value
                 for (int xpos = _width - 1; xpos >= 0; xpos--)
                 {
                     for (int ypos = _height - 1; ypos >= 0; ypos--)
@@ -89,16 +91,16 @@ namespace IBCompSciProject.Loop
 
             } else
             {
-                for(int xpos = 0; xpos < _width; xpos++)
+                //Loop from right to left along 2D array, and call the processing method on each individual value
+                for (int xpos = 0; xpos < _width; xpos++)
                 {
                     for (int ypos = _height-1; ypos >= 0 ; ypos--)		
-
                     {
                         ProcessPixel(xpos, ypos);
                     }
                 }
             }
-            processSwap = !processSwap;
+            _processSwap = !_processSwap;
 
         }
         //The following are used to write the grid color data to a bitmap and display it on screen. Additionally
@@ -113,7 +115,7 @@ namespace IBCompSciProject.Loop
             {
                 for(int y = 0; y < _height; y++)
                 {
-                    _image.SetPixel(x, y, _grid[x, y].color);
+                    Image.SetPixel(x, y, _grid[x, y].color);
                 }
             }
         }
@@ -182,9 +184,9 @@ namespace IBCompSciProject.Loop
 
         //For the actual processes of the games physics simulation
         #region Procesing
-        coord place = new coord(0, 0);
-        Cell c;
-        bool processSwap = true;
+        private coord _currentPlace = new coord(0, 0);
+        private Cell _currentCell;
+        private bool _processSwap = true;
 
         public void ClearGrid()
         {
@@ -199,17 +201,17 @@ namespace IBCompSciProject.Loop
 
         public void ProcessPixel(int x, int y)
         {
-            c = _grid[x, y];
-            place.x = x;
-            place.y = y;
-            if(c.processed == processSwap)
+            _currentCell = _grid[x, y];
+            _currentPlace.x = x;
+            _currentPlace.y = y;
+            if(_currentCell.processed == _processSwap)
             {
                 return;
             }
-            
-            c.processed = processSwap;
 
-            switch (c.type)
+            _currentCell.processed = _processSwap;
+
+            switch (_currentCell.type)
             {
                 case Cell.Type.sand:
                     SandFall();
@@ -228,27 +230,27 @@ namespace IBCompSciProject.Loop
         #region Sand
         private void SandFall()
         {
-            c.velocityY += gravity;
+            _currentCell.velocityY += _gravity;
 
-            int moveMax = (int)Math.Round(c.velocityY);
+            int moveMax = (int)Math.Round(_currentCell.velocityY);
 
             int amountMoved = 0;
 
             while (moveMax > 0)
             {
-                if (SandCanMove(GetCell(place + (coord.Bottom * (amountMoved + 1))).type))
+                if (SandCanMove(GetCell(_currentPlace + (coord.Bottom * (amountMoved + 1))).type))
                 {
                     amountMoved++;
                     moveMax--;
                 }
                 else
                 {
-                    c.velocityY = 0;
+                    _currentCell.velocityY = 0;
                     break;
                 }
 
             }
-            Swap(place, place + (coord.Bottom * amountMoved));
+            Swap(_currentPlace, _currentPlace + (coord.Bottom * amountMoved));
 
             if(amountMoved > 0)
             {
@@ -259,36 +261,36 @@ namespace IBCompSciProject.Loop
 
             if (_rand.Next(0, 2) == 0)
             {
-                if (SandCanMoveLiquid(GetCell(place + coord.BotRight).type))
+                if (SandCanMoveLiquid(GetCell(_currentPlace + coord.BotRight).type))
                 {
-                    Swap(place, place + coord.BotRight);
+                    Swap(_currentPlace, _currentPlace + coord.BotRight);
                     return;
                 }
 
-                if (SandCanMoveLiquid(GetCell(place + coord.BotLeft).type))
+                if (SandCanMoveLiquid(GetCell(_currentPlace + coord.BotLeft).type))
                 {
-                    Swap(place, place + coord.BotLeft);
+                    Swap(_currentPlace, _currentPlace + coord.BotLeft);
                     return;
                 }
             }
             else
             {
-                if (SandCanMoveLiquid(GetCell(place + coord.BotLeft).type))
+                if (SandCanMoveLiquid(GetCell(_currentPlace + coord.BotLeft).type))
                 {
-                    Swap(place, place + coord.BotLeft);
+                    Swap(_currentPlace, _currentPlace + coord.BotLeft);
                     return;
                 }
 
-                if (SandCanMoveLiquid(GetCell(place + coord.BotRight).type))
+                if (SandCanMoveLiquid(GetCell(_currentPlace + coord.BotRight).type))
                 {
-                    Swap(place, place + coord.BotRight);
+                    Swap(_currentPlace, _currentPlace + coord.BotRight);
                     return;
                 }
 
             }
-            if (SandCanMoveLiquid(GetCell(place + coord.Bottom).type))
+            if (SandCanMoveLiquid(GetCell(_currentPlace + coord.Bottom).type))
             {
-                Swap(place, place + coord.Bottom);
+                Swap(_currentPlace, _currentPlace + coord.Bottom);
             }
         }
         private bool SandCanMove(Cell.Type type)
@@ -322,31 +324,31 @@ namespace IBCompSciProject.Loop
         #region Water
         private void WaterFall()
         {
-            c.color = Cell.WaterColor(c.velocityX);
+            _currentCell.color = Cell.WaterColor(_currentCell.velocityX);
 
-            c.velocityY += gravity;
+            _currentCell.velocityY += _gravity;
 
-            int moveMax = (int)Math.Round(c.velocityY);
+            int moveMax = (int)Math.Round(_currentCell.velocityY);
 
             int amountMoved = 0;
 
             while (moveMax > 0)
             {
-                if (WaterCanMove(GetCell(place + (coord.Bottom * (amountMoved + 1))).type))
+                if (WaterCanMove(GetCell(_currentPlace + (coord.Bottom * (amountMoved + 1))).type))
                 {
                     amountMoved++;
                     moveMax--;
                 }
                 else
                 {
-                    c.velocityY = 0;
+                    _currentCell.velocityY = 0;
                     break;
                 }
 
             }
-            Swap(place, place + (coord.Bottom * amountMoved));
+            Swap(_currentPlace, _currentPlace + (coord.Bottom * amountMoved));
 
-            c.velocityX = Math.Min(1, c.velocityX + .05f);
+            _currentCell.velocityX = Math.Min(1, _currentCell.velocityX + .05f);
 
 
             if (amountMoved > 0)
@@ -358,29 +360,29 @@ namespace IBCompSciProject.Loop
 
             if (_rand.Next(0, 2) == 0)
             {
-                if (WaterCanMove(GetCell(place + coord.BotRight).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.BotRight).type))
                 {
-                    Swap(place, place + coord.BotRight);
+                    Swap(_currentPlace, _currentPlace + coord.BotRight);
                     return;
                 }
 
-                if (WaterCanMove(GetCell(place + coord.BotLeft).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.BotLeft).type))
                 {
-                    Swap(place, place + coord.BotLeft);
+                    Swap(_currentPlace, _currentPlace + coord.BotLeft);
                     return;
                 }
             }
             else
             {
-                if (WaterCanMove(GetCell(place + coord.BotLeft).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.BotLeft).type))
                 {
-                    Swap(place, place + coord.BotLeft);
+                    Swap(_currentPlace, _currentPlace + coord.BotLeft);
                     return;
                 }
 
-                if (WaterCanMove(GetCell(place + coord.BotRight).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.BotRight).type))
                 {
-                    Swap(place, place + coord.BotRight);
+                    Swap(_currentPlace, _currentPlace + coord.BotRight);
                     return;
                 }
 
@@ -388,34 +390,34 @@ namespace IBCompSciProject.Loop
 
             if (_rand.Next(0, 2) == 0)
             {
-                if (WaterCanMove(GetCell(place + coord.Right).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.Right).type))
                 {
-                    Swap(place, place + coord.Right);
+                    Swap(_currentPlace, _currentPlace + coord.Right);
                     return;
                 }
 
-                if (WaterCanMove(GetCell(place + coord.Left).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.Left).type))
                 {
-                    Swap(place, place + coord.Left);
+                    Swap(_currentPlace, _currentPlace + coord.Left);
                     return;
                 }
             }
             else
             {
-                if (WaterCanMove(GetCell(place + coord.Left).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.Left).type))
                 {
-                    Swap(place, place + coord.Left);
+                    Swap(_currentPlace, _currentPlace + coord.Left);
                     return;
                 }
 
-                if (WaterCanMove(GetCell(place + coord.Right).type))
+                if (WaterCanMove(GetCell(_currentPlace + coord.Right).type))
                 {
-                    Swap(place, place + coord.Right);
+                    Swap(_currentPlace, _currentPlace + coord.Right);
                     return;
                 }
 
             }
-            c.velocityX = Math.Max(0, c.velocityX - .07f);
+            _currentCell.velocityX = Math.Max(0, _currentCell.velocityX - .07f);
 
         }
         private bool WaterCanMove(Cell.Type type)
@@ -440,22 +442,22 @@ namespace IBCompSciProject.Loop
 
         public void GasProcess()
         {
-            
-            c.velocityX -= 1;
 
-            if (c.velocityX < 0)
+            _currentCell.velocityX -= 1;
+
+            if (_currentCell.velocityX < 0)
             {
-                c = new Cell(Cell.AirColor(), Cell.Type.empty);
+                _currentCell = new Cell(Cell.AirColor(), Cell.Type.empty);
                 return;
             }
 
-            if (c.velocityX < _gasMin)
+            if (_currentCell.velocityX < _gasMin)
             {
                 return;
             }
-            
 
-            c.color = Cell.GasColor(c.velocityX / standardGasDensity);
+
+            _currentCell.color = Cell.GasColor(_currentCell.velocityX / standardGasDensity);
 
             List<Cell> neighborList = new List<Cell>();
             coord[] coordList = coord.AllNeighbors;
@@ -463,10 +465,10 @@ namespace IBCompSciProject.Loop
             {
                 if(_rand.Next(0,2) == 0)
                 {
-                    neighborList.Add(GetCell(place, c));
+                    neighborList.Add(GetCell(_currentPlace, c));
                 } else
                 {
-                    neighborList.Insert(0, GetCell(place, c));
+                    neighborList.Insert(0, GetCell(_currentPlace, c));
                 }
             }
             int possibleMoves = 1;
@@ -476,7 +478,7 @@ namespace IBCompSciProject.Loop
                 {
                     if(n.type == Cell.Type.gas)
                     {
-                        if(n.velocityX < c.velocityX)
+                        if(n.velocityX < _currentCell.velocityX)
                         {
                             possibleMoves++;
                             continue;
@@ -487,14 +489,14 @@ namespace IBCompSciProject.Loop
                 }
             }
 
-            float distribution = c.velocityX / possibleMoves;
+            float distribution = _currentCell.velocityX / possibleMoves;
             float leftOvers = distribution;
 
             foreach (Cell n in neighborList)
             {
                 if(n.type == Cell.Type.gas)
                 {
-                    if(n.velocityX >= c.velocityX)
+                    if(n.velocityX >= _currentCell.velocityX)
                     {
                         leftOvers += distribution;
                         continue;
@@ -507,7 +509,7 @@ namespace IBCompSciProject.Loop
                     n.velocityX = distribution;
                 }
             }
-            c.velocityX = leftOvers;
+            _currentCell.velocityX = leftOvers;
 
         }
         public bool GasCanMove(Cell.Type type)
