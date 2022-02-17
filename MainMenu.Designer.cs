@@ -48,7 +48,6 @@ namespace IBCompSciProject
             this.lbl_title.Size = new System.Drawing.Size(216, 46);
             this.lbl_title.TabIndex = 0;
             this.lbl_title.Text = "Main Menu";
-            this.lbl_title.Click += new System.EventHandler(this.lbl_title_Click);
             // 
             // btn_sim
             // 
@@ -73,7 +72,6 @@ namespace IBCompSciProject
             this.lbl_header.Size = new System.Drawing.Size(263, 92);
             this.lbl_header.TabIndex = 2;
             this.lbl_header.Text = "PARTICLE SIMULATION";
-            this.lbl_header.Click += new System.EventHandler(this.label1_Click);
             // 
             // btn_exit
             // 
@@ -89,7 +87,7 @@ namespace IBCompSciProject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(933, 450);
+            this.ClientSize = new System.Drawing.Size(885, 450);
             this.Controls.Add(this.btn_exit);
             this.Controls.Add(this.lbl_header);
             this.Controls.Add(this.btn_sim);

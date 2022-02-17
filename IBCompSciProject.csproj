@@ -70,6 +70,11 @@
     <Compile Include="Loop\Cell.cs" />
     <Compile Include="Loop\coord.cs" />
     <Compile Include="Loop\GridLoop.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SimulationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,14 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -110,10 +110,6 @@
   <ItemGroup>
     <Content Include="Images\MyImage.jpg" />
     <None Include="Resources\VerySmall.jpg" />
-    <None Include="Resources\pexels-pixabay-258112-min.jpg" />
-    <None Include="Resources\pexels-pixabay-258112.jpg" />
-    <None Include="Resources\SkyBackground.jpg" />
-    <None Include="Resources\SkyBackground.bmp" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -127,5 +123,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

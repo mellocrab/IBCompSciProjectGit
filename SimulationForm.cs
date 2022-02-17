@@ -30,10 +30,13 @@ namespace IBCompSciProject
         private float _previousX;
         private float _previousY;
 
+        private MainMenu _mainMenuCode;
+
         //Constructor, intialize components
-        public SimulationForm()
+        public SimulationForm(MainMenu m)
         {
-            InitializeComponent();  
+            InitializeComponent();
+            _mainMenuCode = m;
         }
 
         //This function is called when the form is loaded. This sets up various initial settings for the form
@@ -138,7 +141,7 @@ namespace IBCompSciProject
                 }
 
                 //Do not run simulation if the user is on the main menu. Simply stall
-                while (MainMenu.CurrentMenu != 1)
+                while (_mainMenuCode.CurrentMenu != 1)
                 {
                     await Task.Delay(100);
                 }
@@ -215,9 +218,7 @@ namespace IBCompSciProject
         //When the back button is clicked, switch forms to main menu. Save which form is active
         private void btn_back_Click(object sender, EventArgs e)
         {
-            MainMenu.simulationForm.Hide();
-            MainMenu.mainMenu.Show();
-            MainMenu.CurrentMenu = 0;
+            _mainMenuCode.SwitchMainMenu();
         }
         //Clear the entire simulation when this button is clicked(set everything to air)
         private void btn_clear_Click(object sender, EventArgs e)

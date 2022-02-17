@@ -31,6 +31,15 @@ namespace IBCompSciProject.Loop
         // It is alternativly used to aid with the avoidance of double processing.
         private bool _fromRight = true;
 
+        //Here are properties dictating the behavior of gas cells
+        private float standardGasDensity = 2000f;
+
+        //Properties used by the simulation. Holds information about current spot being procesed
+        private coord _currentPlace = new coord(0, 0);
+        private Cell _currentCell;
+        private bool _processSwap = true;
+
+
         #region Constructor
         public GridLoop(int width, int height)
         {
@@ -154,7 +163,8 @@ namespace IBCompSciProject.Loop
 
         }
 
-        private float standardGasDensity = 2000f;
+
+        //Get the default version of a cell based on a certain type. Will get an initial state to start out a new cell. Used primarily by the brush to paint new cells.
         private Cell getCellByType(Cell.Type type)
         {
             switch (type)
@@ -184,33 +194,36 @@ namespace IBCompSciProject.Loop
 
         //For the actual processes of the games physics simulation
         #region Procesing
-        private coord _currentPlace = new coord(0, 0);
-        private Cell _currentCell;
-        private bool _processSwap = true;
 
+        //Fills the entire grid with air/empty cells
         public void ClearGrid()
         {
             for (int x = 0; x < _width; x++)
             {
                 for (int y = 0; y < _height; y++)
                 {
-                    _grid[x, y] = new Cell(Cell.AirColor(), Cell.Type.empty);
+                    _grid[x, y] = getCellByType(Cell.Type.empty);
                 }
             }
         }
 
+        //This function, called with a specific coordinate, runs a process on that specific cell, depending on its type.
         public void ProcessPixel(int x, int y)
         {
             _currentCell = _grid[x, y];
             _currentPlace.x = x;
             _currentPlace.y = y;
+
+            //if the cell has already been processed, skip
             if(_currentCell.processed == _processSwap)
             {
                 return;
             }
 
+            //Indicate that that cell has been processed
             _currentCell.processed = _processSwap;
 
+            //Run a speciic code depending on its cell type
             switch (_currentCell.type)
             {
                 case Cell.Type.sand:
@@ -228,10 +241,16 @@ namespace IBCompSciProject.Loop
         }
 
         #region Sand
+
+        //This code is called for sand particles.
+
         private void SandFall()
         {
+            //Increase velocity
             _currentCell.velocityY += _gravity;
 
+
+            //Depending on velocity, move a certain amount of cells downward
             int moveMax = (int)Math.Round(_currentCell.velocityY);
 
             int amountMoved = 0;
@@ -250,15 +269,17 @@ namespace IBCompSciProject.Loop
                 }
 
             }
+            //Swap places with the new place.
             Swap(_currentPlace, _currentPlace + (coord.Bottom * amountMoved));
 
+            //If the cell has moved, return
             if(amountMoved > 0)
             {
                 return;
             }
 
            
-
+            //Randomly, check to either the bottom right or bottom left. If you can move, then move. Do the same with the other side
             if (_rand.Next(0, 2) == 0)
             {
                 if (SandCanMoveLiquid(GetCell(_currentPlace + coord.BotRight).type))
@@ -293,6 +314,8 @@ namespace IBCompSciProject.Loop
                 Swap(_currentPlace, _currentPlace + coord.Bottom);
             }
         }
+
+        //Find out if the sand cell can move/swap with another cell depending on type
         private bool SandCanMove(Cell.Type type)
         {
             
@@ -307,6 +330,8 @@ namespace IBCompSciProject.Loop
             }
             return false;
         }
+
+        //For the special case of moving bottom right and bottom left. Can move in liquids then. Creates a scatter effect
         private bool SandCanMoveLiquid(Cell.Type type)
         {
             switch (type)
@@ -322,14 +347,18 @@ namespace IBCompSciProject.Loop
         }
         #endregion
         #region Water
+
+        //Program called when water cells are processed
         private void WaterFall()
         {
+            //Set the waters color to be based on their velocityX.
             _currentCell.color = Cell.WaterColor(_currentCell.velocityX);
 
+            //Apply gravity
             _currentCell.velocityY += _gravity;
 
+            //Move down a certain number of spaces based on velocity
             int moveMax = (int)Math.Round(_currentCell.velocityY);
-
             int amountMoved = 0;
 
             while (moveMax > 0)
@@ -344,20 +373,21 @@ namespace IBCompSciProject.Loop
                     _currentCell.velocityY = 0;
                     break;
                 }
-
             }
+
+            //Swap places with the final result of the move
             Swap(_currentPlace, _currentPlace + (coord.Bottom * amountMoved));
 
+            //Change the color variable
             _currentCell.velocityX = Math.Min(1, _currentCell.velocityX + .05f);
 
-
+            //If you moved downward, return
             if (amountMoved > 0)
             {
                 return;
             }
 
-
-
+            //Check either right or left, then the other. If you can move that way, then do so.
             if (_rand.Next(0, 2) == 0)
             {
                 if (WaterCanMove(GetCell(_currentPlace + coord.BotRight).type))
@@ -388,6 +418,7 @@ namespace IBCompSciProject.Loop
 
             }
 
+            //Check either bottom right or bottom left, then the other. If you can move that way, then do so.
             if (_rand.Next(0, 2) == 0)
             {
                 if (WaterCanMove(GetCell(_currentPlace + coord.Right).type))
@@ -417,9 +448,12 @@ namespace IBCompSciProject.Loop
                 }
 
             }
+            //Change the color variable, because if you made it here you did not move
             _currentCell.velocityX = Math.Max(0, _currentCell.velocityX - .07f);
 
         }
+        
+        //Check which cells that water can move/swap to
         private bool WaterCanMove(Cell.Type type)
         {
             bool can = false;
@@ -438,27 +472,26 @@ namespace IBCompSciProject.Loop
 
         #region Gas
 
-        private float _gasMin = 100;
-
+        //This code is called when a gas cell is processed
         public void GasProcess()
         {
+            //VelocityX holds a "density"-like variable here.
 
+            //Decrease density
             _currentCell.velocityX -= 1;
 
+            //If density is too low, then become an air/empty cell
             if (_currentCell.velocityX < 0)
             {
-                _currentCell = new Cell(Cell.AirColor(), Cell.Type.empty);
+                _currentCell = getCellByType(Cell.Type.empty);
                 return;
             }
 
-            if (_currentCell.velocityX < _gasMin)
-            {
-                return;
-            }
-
-
+            //Set the color of the cell based on its density
             _currentCell.color = Cell.GasColor(_currentCell.velocityX / standardGasDensity);
 
+
+            //Get neighbor cells
             List<Cell> neighborList = new List<Cell>();
             coord[] coordList = coord.AllNeighbors;
             foreach(coord c in coordList)
@@ -471,6 +504,8 @@ namespace IBCompSciProject.Loop
                     neighborList.Insert(0, GetCell(_currentPlace, c));
                 }
             }
+
+            //Get possible number of cells to move to
             int possibleMoves = 1;
             foreach(Cell n in neighborList)
             {
@@ -489,6 +524,8 @@ namespace IBCompSciProject.Loop
                 }
             }
 
+
+            //Spit and distribute density to other valid cells around you, to simulate a evening effect
             float distribution = _currentCell.velocityX / possibleMoves;
             float leftOvers = distribution;
 
@@ -512,6 +549,8 @@ namespace IBCompSciProject.Loop
             _currentCell.velocityX = leftOvers;
 
         }
+
+        //Get types of cells that gas can spread/move to
         public bool GasCanMove(Cell.Type type)
         {
             switch (type)
