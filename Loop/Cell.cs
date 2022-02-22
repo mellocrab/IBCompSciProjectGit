@@ -85,7 +85,6 @@ namespace IBCompSciProject.Loop
         //Gets a random color. Size determines how strong the color will be.  
         public static Color RandomColor(float size)
         {
-
             return Color.FromArgb((int)(random.NextDouble() * size * 255), (int)(random.NextDouble() * size * 255), (int)(random.NextDouble() * size * 255));
         }
 

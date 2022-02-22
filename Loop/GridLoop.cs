@@ -565,6 +565,8 @@ namespace IBCompSciProject.Loop
         #endregion
         #region Tools
 
+
+        //Swap the cells at position a and b
         private void Swap(coord a, coord b)
         {
             if (IsSafe(a) == false || IsSafe(b) == false)
@@ -576,6 +578,7 @@ namespace IBCompSciProject.Loop
             SetCell(b, temp);
         }
 
+        //Get cell at position a
         private Cell GetCell(coord a)
         {
             if(IsSafe(a) == false)
@@ -584,6 +587,8 @@ namespace IBCompSciProject.Loop
             }
             return _grid[a.x, a.y];
         }
+
+        //Get Cell at position a + direction
         private Cell GetCell(coord a, coord direction)
         {
             if (IsSafe(a + direction) == false)
@@ -594,6 +599,7 @@ namespace IBCompSciProject.Loop
             return _grid[temp.x, temp.y];
         }
 
+        //Change the cell at position at a to cell c
         private void SetCell(coord a, Cell c)
         {
             if (IsSafe(a) == false)
@@ -603,6 +609,7 @@ namespace IBCompSciProject.Loop
             _grid[a.x, a.y] = c;
         }
 
+        //Check if the coord is outside of the grid bounds
         private bool IsSafe(coord c)
         {
             if (c.x >= _width || c.x < 0 || c.y >= _height || c.y < 0)
@@ -616,7 +623,6 @@ namespace IBCompSciProject.Loop
 
 
         #endregion
-        //https://stackoverflow.com/questions/15696812/how-to-set-relative-path-to-images-directory-inside-c-sharp-project
     }
 
 

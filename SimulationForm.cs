@@ -27,9 +27,11 @@ namespace IBCompSciProject
         private int _brushRadius;
         private bool _previouslyHeldDown;
 
+        //Holds references to the mouse position of the previous frame
         private float _previousX;
         private float _previousY;
 
+        //Reference to code behind main menu form
         private MainMenu _mainMenuCode;
 
         //Constructor, intialize components
@@ -225,8 +227,9 @@ namespace IBCompSciProject
         {
             _myGrid.ClearGrid();
         }
-        #endregion
 
+
+        #endregion
 
 
     }
