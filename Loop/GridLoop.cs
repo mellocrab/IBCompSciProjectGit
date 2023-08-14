@@ -32,7 +32,7 @@ namespace IBCompSciProject.Loop
         private bool _fromRight = true;
 
         //Here are properties dictating the behavior of gas cells
-        private float standardGasDensity = 2000f;
+        private float _standardGasDensity = 2000f;
 
         //Properties used by the simulation. Holds information about current spot being procesed
         private coord _currentPlace = new coord(0, 0);
@@ -118,7 +118,7 @@ namespace IBCompSciProject.Loop
 
 
         //Set color values of bitmap to that of the grid
-        private void drawToBitmap()
+        private void DrawToBitmap()
         {
             for(int x = 0; x < _width; x++)
             {
@@ -131,7 +131,7 @@ namespace IBCompSciProject.Loop
 
 
         //Used to aid with player input. Draws a circle of a specific pixel value.
-        private void drawAt(double x, double y, int radius, Cell.Type type)
+        private void DrawAt(double x, double y, int radius, Cell.Type type)
         {
             int centerX = (int)(x * _width);
             int centerY = (int)(y * _height);
@@ -165,7 +165,7 @@ namespace IBCompSciProject.Loop
 
 
         //Get the default version of a cell based on a certain type. Will get an initial state to start out a new cell. Used primarily by the brush to paint new cells.
-        private Cell getCellByType(Cell.Type type)
+        private Cell GetCellByType(Cell.Type type)
         {
             switch (type)
             {
@@ -473,7 +473,7 @@ namespace IBCompSciProject.Loop
         #region Gas
 
         //This code is called when a gas cell is processed
-        public void GasProcess()
+        private void GasProcess()
         {
             //VelocityX holds a "density"-like variable here.
 
@@ -551,7 +551,7 @@ namespace IBCompSciProject.Loop
         }
 
         //Get types of cells that gas can spread/move to
-        public bool GasCanMove(Cell.Type type)
+        private bool GasCanMove(Cell.Type type)
         {
             switch (type)
             {
